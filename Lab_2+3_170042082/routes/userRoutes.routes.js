@@ -6,9 +6,9 @@ const {isLoggedIn} = require("./../middlewares/users.middlewares.js");
 const {
     getLogin,
     getRegister,
-    getDashboard,
     postLogin,
     postRegister,
+    getDashboard,
 } = require("./../controllers/userController.controllers");
 
 router.use(bodyParser.urlencoded({ extended : false}));

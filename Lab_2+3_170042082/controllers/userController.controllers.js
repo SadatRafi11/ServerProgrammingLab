@@ -17,7 +17,8 @@ const dbconnection = mysql.createConnection({
 });
 
 const getLogin = (req, res) => {
-    res.status(203).sendFile("login.html", {root : "./views/users"});
+    // res.status(203).sendFile("login.ejs", {root : "./views/users"});
+    res.render("users/login.ejs");
 }
 //bcryptjs
 const postLogin = async(req, res) => {
@@ -31,22 +32,23 @@ const postLogin = async(req, res) => {
         
         if (!(await bcrypt.compare(password,result[0].user_password))) {
             alert("Wrong Credentials!");
-            res.sendFile("login.html", {root : "./views/users"});
+            res.render("users/login.ejs");
         } else if (result != undefined) {
             console.log(result[0].username);
             console.log("valid user...");
             let thisUser = result[0].username;
-            res.cookie("loggedIn", "yes");
+            res.cookie("loggedIn", result[0].username);
             res.redirect(`/users/dashboard/${thisUser}`);
         } else {
             alert("Wrong Credentials!");
-            res.sendFile("login.html", {root : "./views/users"});
+            res.render("users/login.ejs");
         }
     });
 }
 
 const getRegister = (req, res) => {
-    res.status(202).sendFile("register.html", {root : "./views/users"});
+    // res.status(202).sendFile("register.ejs", {root : "./views/users"});
+    res.render("users/register.ejs");
 }
 
 const postRegister = async(req, res) => {
@@ -66,14 +68,14 @@ const postRegister = async(req, res) => {
 
 const getDashboard = (req, res) => {
     res.status(210);
-    const username = req.params.username;
-    res.sendFile("dashboard.html", {root : "./views/users"});
+    // const username = req.params.username;
+    res.render("users/dashboard.ejs");
 }
 
 module.exports = {
     getLogin,
     getRegister,
-    getDashboard,
     postLogin,
     postRegister,
+    getDashboard
 };
