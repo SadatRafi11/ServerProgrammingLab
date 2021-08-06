@@ -1,0 +1,10 @@
+<%if(error.length>0){%>
+        <div class="alert alert-danger"><%=error%></div>
+        <%}%>
+
+<!-- <%if(errors.length>0){%>
+        <div class="alert alert-danger">
+          <%errors.forEach(error=>{%> <%= error%><br />
+          <%})%>
+        </div>
+        <%}%> -->
