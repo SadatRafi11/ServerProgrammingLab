@@ -88,6 +88,10 @@ const PCSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    uniqueKey :{
+        type: String,
+        required: true,
+    }
 });
 
 const ProgrammingContest = mongoose.model("ProgrammingContest", PCSchema);

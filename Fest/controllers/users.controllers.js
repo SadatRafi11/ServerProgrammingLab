@@ -20,6 +20,13 @@ const postRegister = (req, res) => {
 
     const errors = [];
 
+    if (!name || !email || !password || !confirm_password) {
+        errors.push("All fields are required!");
+    }
+    if (password.length < 6) {
+        errors.push("Password must be at least 6 characters!");
+    }
+
     if (password !== confirm_password) {
         errors.push("Passwords don't match");
     }

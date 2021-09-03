@@ -1,4 +1,7 @@
 const MathOlympiad = require("../models/MathOlympiad.model");
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
+const { sendGreetingEmail } = require("./emailGen.controller");
 
 const getMO = (req, res) => {
     res.render("math-olympiad/register.ejs", { error: req.flash("error") });
@@ -22,7 +25,7 @@ const getMOList = (req, res) => {
     });
 };
 
-const postMO = (req, res) => {
+const postMO = async (req, res) => {
     const { name, contact, email, category, institution, tshirt } = req.body;
     let registrationFee = 0;
     if (category == "school") {
@@ -33,6 +36,7 @@ const postMO = (req, res) => {
         registrationFee = 500;
     }
 
+    let uniqueKey = crypto.randomBytes(32).toString('hex');
     const total = registrationFee;
     const paid = 0;
     const selected = false;
@@ -55,8 +59,10 @@ const postMO = (req, res) => {
                 total,
                 selected,
                 tshirt,
+                uniqueKey,
             });
             participant.save().then(() => {
+                sendGreetingEmail(email, uniqueKey, name, "Math Olympiad");
                 error = "Participant has been registered successfully!";
                 console.log(error);
                 req.flash("error", error);
@@ -81,7 +87,7 @@ const deleteMO = (req, res) => {
             req.flash("error", error);
             res.redirect("/MathOlympiad/list");
         } else {
-            error = "Payment status has been updated successfully!";
+            error = "Deleted successfully!";
             req.flash("error", error);
             res.redirect("/MathOlympiad/list");
         }

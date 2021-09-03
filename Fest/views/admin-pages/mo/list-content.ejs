@@ -34,6 +34,7 @@
                 <th>Payment Done</th>
                 <th>Edit</th>
                 <th>Delete</th>
+                <th>Unique Key</th>
               </tr>
             </thead>
 
@@ -71,6 +72,7 @@
                     <% const deleteURL = "/MathOlympiad/delete/" + participant._id %>
                     <a href="<%= deleteURL %>"><i class="fa fa-trash"></i><span class="fa fa-chevron"></span></a>
                   </th>
+                  <th><%= participant.uniqueKey %></th>
                 </tr>
                 <%})}%>
             </tbody>

@@ -1,4 +1,7 @@
 const ProgrammingContest = require("../models/ProgrammingContest.model");
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
+const { sendGreetingEmail } = require("./emailGen.controller");
 
 const getPC = (req, res) => {
     res.render("programming-contest/register.ejs", { error: req.flash("error") });
@@ -31,6 +34,7 @@ const postPC = (req, res) => {
         member2Name, member2Contact, member2Email, member2Tshirt,
     } = req.body;
 
+    let uniqueKey = crypto.randomBytes(32).toString('hex');
     const total = 3000;
     const paid = 0;
     const selected = false;
@@ -49,9 +53,11 @@ const postPC = (req, res) => {
                 leaderName, leaderContact, leaderEmail, leaderTshirt,
                 member1Name, member1Contact, member1Email, member1Tshirt,
                 member2Name, member2Contact, member2Email, member2Tshirt,
-                total, paid, selected,
+                total, paid, selected, uniqueKey,
             });
             team.save().then(() => {
+                sendGreetingEmail(leaderEmail, uniqueKey, teamName, "Math Olympiad");
+                sendGreetingEmail(coachEmail, uniqueKey, teamName, "Math Olympiad");
                 error = "This team has registered successfully!";
                 console.log(error);
                 req.flash("error", error);
